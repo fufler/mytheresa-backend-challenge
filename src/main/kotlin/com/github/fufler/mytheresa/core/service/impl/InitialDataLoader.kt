@@ -8,6 +8,7 @@ import com.github.fufler.mytheresa.core.service.impl.model.CategoriesRepository
 import com.github.fufler.mytheresa.core.service.impl.model.DBBackedCategory
 import com.github.fufler.mytheresa.core.service.impl.model.DBBackedProduct
 import com.github.fufler.mytheresa.core.service.impl.model.ProductsRepository
+import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -39,6 +40,8 @@ class InitialDataLoader(
 
         if (categoriesRepository.isNotEmpty() || productsRepository.isNotEmpty())
             return
+
+        logger.info("Loading initial data from {}", initialDataPath)
 
         val objectMapper = jacksonObjectMapper()
 
@@ -72,5 +75,6 @@ class InitialDataLoader(
 
     companion object {
         internal const val PROP_INITIAL_DATA_PATH = "db.initialDataPath"
+        private val logger = LoggerFactory.getLogger(InitialDataLoader::class.java)
     }
 }
