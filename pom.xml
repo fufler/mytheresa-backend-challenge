@@ -29,7 +29,6 @@
         <spring.version>2.6.1</spring.version>
         <spring-integraion-hazelcast.version>3.0.0</spring-integraion-hazelcast.version>
         <springdoc.version>1.6.3</springdoc.version>
-        <swagger.annotations.version>2.1.11</swagger.annotations.version>
         <mockk.version>1.12.3</mockk.version>
     </properties>
 
@@ -75,12 +74,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.swagger.core.v3</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>${swagger.annotations.version}</version>
         </dependency>
 
         <dependency>
