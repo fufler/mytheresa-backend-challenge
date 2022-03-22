@@ -24,10 +24,35 @@
       "category": "sandals",
       "price": 79500
     },
-    {"sku": "000005",
+    {
+      "sku": "000005",
       "name": "Nathane leather sneakers",
       "category": "sneakers",
       "price": 59000
+    },
+    {
+      "sku": "000006",
+      "name": "Some cool boots",
+      "category": "boots",
+      "price": 100500
+    },
+    {
+      "sku": "000007",
+      "name": "Some other cool boots",
+      "category": "boots",
+      "price": 1005000
+    },
+    {
+      "sku": "000008",
+      "name": "Even more cooler boots",
+      "category": "boots",
+      "price": 10050000
+    },
+    {
+      "sku": "000009",
+      "name": "The most coolest boots ever",
+      "category": "boots",
+      "price": 1005000000
     }
   ]
 }
