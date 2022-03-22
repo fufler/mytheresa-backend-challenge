@@ -1,11 +1,11 @@
 package com.github.fufler.mytheresa.core.service
 
-import com.github.fufler.mytheresa.api.remote.ListProductsResponse
+import com.github.fufler.mytheresa.core.model.Product
 
 interface ProductsService {
     fun findProducts(
-        category: String? = null,
+        categoryName: String,
         priceLessThan: Int? = null,
         limit: Int? = null
-    ): List<ListProductsResponse.Product>
+    ): List<Product>
 }
