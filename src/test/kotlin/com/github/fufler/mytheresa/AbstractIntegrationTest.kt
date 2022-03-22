@@ -29,7 +29,11 @@ abstract class AbstractIntegrationTest {
             .encode()
             .toUriString()
 
-        return restTemplate.getForObject(uri, responseType.java, params)
+        val response = requireNotNull(restTemplate.getForObject(uri, responseType.java, params)) {
+            "Expected non-empty response for GET request"
+        }
+
+        return response
     }
 
     init {
