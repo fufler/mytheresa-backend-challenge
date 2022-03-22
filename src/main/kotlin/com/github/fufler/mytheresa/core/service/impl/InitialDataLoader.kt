@@ -45,7 +45,13 @@ class InitialDataLoader(
 
         val objectMapper = jacksonObjectMapper()
 
-        val products = File(initialDataPath).reader().use { reader ->
+        val initialDataFile = File(initialDataPath)
+
+        require(initialDataFile.exists()) {
+            "Initial data file $initialDataPath must exist"
+        }
+
+        val products = initialDataFile.reader().use { reader ->
             objectMapper.readValue<Products>(reader)
         }.products
 
