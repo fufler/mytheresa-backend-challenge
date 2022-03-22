@@ -29,7 +29,10 @@
         <spring.version>2.6.1</spring.version>
         <spring-integraion-hazelcast.version>3.0.0</spring-integraion-hazelcast.version>
         <springdoc.version>1.6.3</springdoc.version>
+
         <mockk.version>1.12.3</mockk.version>
+        <h2.version>1.4.200</h2.version>
+        <it.skip>false</it.skip>
     </properties>
 
     <dependencyManagement>
@@ -116,6 +119,14 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -208,7 +219,67 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>3.0.0-M4</version>
+                <configuration>
+                    <failIfNoTests>true</failIfNoTests>
+                    <skip>${maven.test.skip}</skip>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.0.0-M4</version>
+
+                <executions>
+                    <execution>
+                        <id>integration-tests</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>${project.build.outputDirectory}/
+                        </additionalClasspathElement>
+                    </additionalClasspathElements>
+                    <failIfNoTests>true</failIfNoTests>
+                    <skip>${it.skip}</skip>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.5.0</version>
+
+                <executions>
+                    <execution>
+                        <id>run-backend</id>
+                        <phase>pre-integration-test</phase>
+
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+
+                        <configuration>
+                            <executable>java</executable>
+                            <classpathScope>test</classpathScope>
+                            <arguments>
+                                <argument>-Dspring.profiles.active=it</argument>
+                                <argument>-Ddb.pool=10</argument>
+                                <argument>-Ddb.initialDataPath=${project.basedir}/src/test/resources/db/data/initial_data.json</argument>
+                                <argument>-classpath</argument>
+                                <classpath/>
+                                <argument>com.github.fufler.mytheresa.ApplicationKt</argument>
+                            </arguments>
+                            <async>true</async>
+                            <skip>${it.skip}</skip>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
