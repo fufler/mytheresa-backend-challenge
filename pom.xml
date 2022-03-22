@@ -31,6 +31,7 @@
         <springdoc.version>1.6.3</springdoc.version>
         <swagger.annotations.version>2.1.11</swagger.annotations.version>
         <junit-jupiter.version>5.8.1</junit-jupiter.version>
+        <mockk.version>1.12.3</mockk.version>
     </properties>
 
     <dependencyManagement>
@@ -93,6 +94,20 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-kotlin</artifactId>
             <version>${springdoc.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.mockk</groupId>
+            <artifactId>mockk</artifactId>
+            <version>${mockk.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <!-- Use one provided by org.springframework.boot:spring-boot-starter-test -->
+                    <groupId>org.objenesis</groupId>
+                    <artifactId>objenesis</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
