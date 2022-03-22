@@ -32,10 +32,10 @@ class ProductsIT : AbstractIntegrationTest() {
 
     @Test
     fun `by price filtering should work and price filter should applied prior to discount computation`() {
-        assertEquals(0, queryProducts("sneakers", 59000).size)
+        assertEquals(1, queryProducts("sneakers", 59000).size)
         assertEquals(1, queryProducts("sneakers", 59001).size)
 
-        assertEquals(0, queryProducts("boots", 71000).size)
+        assertEquals(1, queryProducts("boots", 71000).size)
         assertEquals(1, queryProducts("boots", 71001).size)
 
         assertEquals(3, queryProducts("boots", 100000).size)

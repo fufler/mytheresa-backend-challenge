@@ -9,7 +9,7 @@ interface ProductsRepository : JpaRepository<DBBackedProduct, String> {
     fun isNotEmpty(): Boolean
 
     @Query(
-        "SELECT p FROM DBBackedProduct p JOIN DBBackedCategory c ON p.categoryId = c.id AND c.name = :categoryName AND (:priceLessThan IS NULL OR p.price < :priceLessThan)"
+        "SELECT p FROM DBBackedProduct p JOIN DBBackedCategory c ON p.categoryId = c.id AND c.name = :categoryName AND (:priceLessThan IS NULL OR p.price <= :priceLessThan)"
     )
     fun findProducts(categoryName: String, priceLessThan: Int?, pageable: Pageable?): List<DBBackedProduct>
 }
