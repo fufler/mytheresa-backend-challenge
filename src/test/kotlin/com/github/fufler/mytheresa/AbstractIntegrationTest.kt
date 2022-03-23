@@ -45,8 +45,8 @@ abstract class AbstractIntegrationTest {
             try {
                 val response = performGetRequest("/actuator/health")
 
-                if (response.get("status")?.textValue() == "UP")
-                    return
+                require(response.get("status")?.textValue() == "UP")
+                return
             } catch (e: Exception) {
                 Thread.sleep(CONNECT_INTERVAL)
             }
