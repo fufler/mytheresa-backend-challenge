@@ -71,26 +71,40 @@ class InitialDataLoader(
 
         val categoriesMap = mutableMapOf<String, Long>()
 
-        for (category in categories)
-            categoriesMap[category] = categoriesRepository.save(
-                DBBackedCategory(
-                    name = category
-                )
-            ).id
+        categories
+            .chunked(SAVE_CHUNK_SIZE) { items ->
+                items.map {
+                    DBBackedCategory(
+                        name = it
+                    )
+                }
+            }
+            .forEach { items ->
+                categoriesRepository
+                    .saveAll(items)
+                    .forEach { c ->
+                        categoriesMap[c.name] = c.id
+                    }
+            }
 
-        for (product in products)
-            productsRepository.save(
-                DBBackedProduct(
-                    sku = product.sku,
-                    name = product.name,
-                    price = product.price,
-                    categoryId = categoriesMap.getValue(product.category)
-                )
-            )
+        products
+            .chunked(SAVE_CHUNK_SIZE) { items ->
+                items.map {
+                    DBBackedProduct(
+                        sku = it.sku,
+                        name = it.name,
+                        price = it.price,
+                        categoryId = categoriesMap.getValue(it.category)
+                    )
+                }
+            }
+            .forEach(productsRepository::saveAll)
+
     }
 
     companion object {
         internal const val PROP_INITIAL_DATA_PATH = "db.initialDataPath"
+        private const val SAVE_CHUNK_SIZE = 100
         private val logger = LoggerFactory.getLogger(InitialDataLoader::class.java)
     }
 }
