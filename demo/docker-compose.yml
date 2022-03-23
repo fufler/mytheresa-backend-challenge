@@ -1,0 +1,44 @@
+version: '2.4'
+
+services:
+  postgres:
+    image: postgres:11
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+      interval: 1s
+      timeout: 1s
+      retries: 10
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - mytheresa_backend_challenge_demo
+
+  backend:
+    image: fufler/mytheresa-backend-challenge:1.0-SNAPSHOT
+    volumes:
+      - ./initial_data_100k.json:/opt/app/initial_data_100k.json
+    ports:
+      - ${BACKEND_PORT}:8080
+    environment:
+      JVM_OPTS: |
+        -Ddb.driver=postgresql
+        -Ddb.host=postgres
+        -Ddb.port=5432
+        -Ddb.name=${POSTGRES_DB}
+        -Ddb.user=${POSTGRES_USER}
+        -Ddb.password=${POSTGRES_PASSWORD}
+        -Ddb.pool=10
+        -Ddb.initialDataPath=/opt/app/initial_data_100k.json
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - mytheresa_backend_challenge_demo
+
+networks:
+  mytheresa_backend_challenge_demo:
+    driver: bridge
