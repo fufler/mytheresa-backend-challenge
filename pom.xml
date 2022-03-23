@@ -293,101 +293,99 @@
         <profile>
             <id>docker</id>
             <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <artifactId>maven-dependency-plugin</artifactId>
-                            <executions>
-                                <execution>
-                                    <phase>package</phase>
-                                    <goals>
-                                        <goal>copy-dependencies</goal>
-                                    </goals>
-                                    <configuration>
-                                        <includeScope>runtime</includeScope>
-                                        <outputDirectory>${docker.context.app.path}/dependencies/3rd-party
-                                        </outputDirectory>
-                                    </configuration>
-                                </execution>
-                            </executions>
-                        </plugin>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <includeScope>runtime</includeScope>
+                                    <outputDirectory>${docker.context.app.path}/dependencies/3rd-party
+                                    </outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
 
-                        <plugin>
-                            <artifactId>maven-antrun-plugin</artifactId>
-                            <version>3.0.0</version>
-                            <executions>
-                                <execution>
-                                    <id>copy-app-docker-files</id>
-                                    <phase>package</phase>
-                                    <configuration>
-                                        <target>
-                                            <copy toDir="${docker.context.app.path}">
-                                                <fileset dir="${docker.src.app.path}" includes="*"/>
-                                            </copy>
-                                        </target>
-                                    </configuration>
-                                    <goals>
-                                        <goal>run</goal>
-                                    </goals>
-                                </execution>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>copy-app-docker-files</id>
+                                <phase>package</phase>
+                                <configuration>
+                                    <target>
+                                        <copy toDir="${docker.context.app.path}">
+                                            <fileset dir="${docker.src.app.path}" includes="*"/>
+                                        </copy>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
 
-                                <execution>
-                                    <id>copy-app-jar</id>
-                                    <phase>package</phase>
-                                    <configuration>
-                                        <target>
-                                            <copy toDir="${docker.context.app.path}/dependencies/app">
-                                                <fileset dir="${project.build.directory}"
-                                                         includes="${project.build.finalName}.jar"/>
-                                            </copy>
-                                        </target>
-                                    </configuration>
-                                    <goals>
-                                        <goal>run</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
-                        </plugin>
+                            <execution>
+                                <id>copy-app-jar</id>
+                                <phase>package</phase>
+                                <configuration>
+                                    <target>
+                                        <copy toDir="${docker.context.app.path}/dependencies/app">
+                                            <fileset dir="${project.build.directory}"
+                                                     includes="${project.build.finalName}.jar"/>
+                                        </copy>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
 
-                        <plugin>
-                            <groupId>com.spotify</groupId>
-                            <artifactId>dockerfile-maven-plugin</artifactId>
-                            <version>1.4.13</version>
-                            <executions>
-                                <execution>
-                                    <id>build-app-image</id>
-                                    <phase>package</phase>
-                                    <goals>
-                                        <goal>build</goal>
-                                        <goal>tag</goal>
-                                    </goals>
-                                    <configuration>
-                                        <pullNewerImage>false</pullNewerImage>
-                                        <repository>${docker.registry}/${project.artifactId}</repository>
-                                        <contextDirectory>${docker.context.app.path}</contextDirectory>
-                                        <tag>${project.version}</tag>
-                                        <buildArgs>
-                                            <PROJECT_VERSION>${project.version}</PROJECT_VERSION>
-                                            <JRE_TAG>${docker.base.jre.tag}</JRE_TAG>
-                                        </buildArgs>
-                                    </configuration>
-                                </execution>
-                            </executions>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>dockerfile-maven-plugin</artifactId>
+                        <version>1.4.13</version>
+                        <executions>
+                            <execution>
+                                <id>build-app-image</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                    <goal>tag</goal>
+                                </goals>
+                                <configuration>
+                                    <pullNewerImage>false</pullNewerImage>
+                                    <repository>${docker.registry}/${project.artifactId}</repository>
+                                    <contextDirectory>${docker.context.app.path}</contextDirectory>
+                                    <tag>${project.version}</tag>
+                                    <buildArgs>
+                                        <PROJECT_VERSION>${project.version}</PROJECT_VERSION>
+                                        <JRE_TAG>${docker.base.jre.tag}</JRE_TAG>
+                                    </buildArgs>
+                                </configuration>
+                            </execution>
+                        </executions>
 
-                            <configuration>
-                                <skipDockerInfo>true</skipDockerInfo>
-                            </configuration>
+                        <configuration>
+                            <skipDockerInfo>true</skipDockerInfo>
+                        </configuration>
 
-                            <dependencies>
-                                <dependency>
-                                    <groupId>javax.activation</groupId>
-                                    <artifactId>activation</artifactId>
-                                    <version>1.1.1</version>
-                                </dependency>
-                            </dependencies>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
+                        <dependencies>
+                            <dependency>
+                                <groupId>javax.activation</groupId>
+                                <artifactId>activation</artifactId>
+                                <version>1.1.1</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
             </build>
         </profile>
     </profiles>
