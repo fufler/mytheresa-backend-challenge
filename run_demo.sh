@@ -1,9 +1,9 @@
 #!/bin/sh -e
 
-mvn                     \
-  -P docker             \
-  -D mvn.test.skip=true \
-  -D it.skip=true       \
+mvn                       \
+  -P docker               \
+  -D maven.test.skip=true \
+  -D it.skip=true         \
   clean verify
 
 ./utils/generate_test_data.py    \
