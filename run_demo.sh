@@ -15,6 +15,7 @@ mvn                       \
 docker-compose                   \
   -f demo/docker-compose.yml     \
   -p mytheresa-backend-challenge \
+  --env demo/.env                \
   up                             \
   --force-recreate               \
   --renew-anon-volumes
